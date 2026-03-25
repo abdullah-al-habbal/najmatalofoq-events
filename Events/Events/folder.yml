@@ -1,0 +1,9 @@
+info:
+  name: Events
+  type: folder
+  seq: 1
+
+request:
+  auth:
+    type: bearer
+    token: 3|ZdKWhAb3BWkI3JqBG5wprcobNseTBVKYz2Zbhb3Ye0a857ea
