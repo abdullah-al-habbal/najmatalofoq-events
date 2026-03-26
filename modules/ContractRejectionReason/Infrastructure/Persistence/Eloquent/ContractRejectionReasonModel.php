@@ -4,41 +4,25 @@ declare(strict_types=1);
 
 namespace Modules\ContractRejectionReason\Infrastructure\Persistence\Eloquent;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 final class ContractRejectionReasonModel extends Model
 {
-    use HasUuids, HasTranslations;
+    use HasUuids;
 
     protected $table = 'contract_rejection_reasons';
-
     protected $keyType = 'string';
-
     public $incrementing = false;
 
-    public array $translatable = ['reason'];
-
     protected $fillable = [
+        'id',
         'reason',
         'is_active',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'reason' => 'array',
-            'is_active' => 'boolean',
-        ];
-    }
-
-    public function contracts(): HasMany
-    {
-        return $this->hasMany(
-            \Modules\EventContract\Infrastructure\Persistence\Eloquent\EventContractModel::class,
-            'rejection_reason_id',
-        );
-    }
+    protected $casts = [
+        'reason' => 'array',
+        'is_active' => 'boolean',
+    ];
 }

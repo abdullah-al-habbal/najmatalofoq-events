@@ -15,6 +15,11 @@ final class UserAlreadyExistsException extends DomainException
         return new self("A user with email '{$email}' already exists.");
     }
 
+    public static function withPhone(string $phone): self
+    {
+        return new self("A user with phone '{$phone}' already exists.");
+    }
+
     public function getErrorCode(): ErrorCode
     {
         return ErrorCode::USER_ALREADY_EXISTS;

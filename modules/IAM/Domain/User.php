@@ -15,32 +15,40 @@ final class User extends AggregateRoot
 {
     private function __construct(
         public readonly UserId $uuid,
-        public readonly string $name,
-        public readonly string $email,
+        public readonly array $name,
+        public readonly ?string $email,
+        public readonly string $phone,
         public private(set) HashedPassword $password,
         /** @var list<RoleId> */
         public private(set) array $roleIds,
+        public private(set) bool $isActive,
         public readonly DateTimeImmutable $createdAt,
         public private(set) ?DateTimeImmutable $updatedAt = null,
+        public private(set) ?DateTimeImmutable $phoneVerifiedAt = null,
+        public private(set) ?DateTimeImmutable $deletedAt = null,
     ) {}
 
     public static function register(
         UserId $uuid,
-        string $name,
-        string $email,
+        array $name,
+        ?string $email,
+        string $phone,
         HashedPassword $password,
         array $roleIds,
         DateTimeImmutable $createdAt,
+        bool $isActive = false,
     ): self {
         $user = new self(
             uuid: $uuid,
             name: $name,
             email: $email,
+            phone: $phone,
             password: $password,
             roleIds: $roleIds,
+            isActive: $isActive,
             createdAt: $createdAt,
         );
-        $user->recordEvent(new UserRegistered($uuid, $email));
+        $user->recordEvent(new UserRegistered($uuid, $phone));
         return $user;
     }
 

@@ -18,24 +18,25 @@ final class EloquentUserRepository implements UserRepositoryInterface
     public function save(User $user): void
     {
         $model = UserModel::updateOrCreate(
-            ['uuid' => $user->uuid->value],
+            ['id' => $user->uuid->value],
             [
                 'name' => $user->name,
                 'email' => $user->email,
+                'phone' => $user->phone,
                 'password' => $user->password->value,
+                'is_active' => $user->isActive,
                 'created_at' => $user->createdAt,
                 'updated_at' => $user->updatedAt,
             ]
         );
 
-        // Sync roles
-        $roleUuids = array_map(fn($roleId) => $roleId->value, $user->roleIds);
-        $model->roles()->sync($roleUuids);
+        $roleIds = array_map(fn($roleId) => $roleId->value, $user->roleIds);
+        $model->roles()->sync($roleIds);
     }
 
-    public function findByUuid(string $uuid): ?User
+    public function findById(UserId $id): ?User
     {
-        $model = UserModel::with('roles')->where('uuid', $uuid)->first();
+        $model = UserModel::with('roles')->where('id', $id->value)->first();
         return $model ? UserReflector::fromModel($model) : null;
     }
 
@@ -45,8 +46,9 @@ final class EloquentUserRepository implements UserRepositoryInterface
         return $model ? UserReflector::fromModel($model) : null;
     }
 
-    public function findById(UserId $id): ?User
+    public function findByPhone(string $phone): ?User
     {
-        return $this->findByUuid($id->value);
+        $model = UserModel::with('roles')->where('phone', $phone)->first();
+        return $model ? UserReflector::fromModel($model) : null;
     }
 }

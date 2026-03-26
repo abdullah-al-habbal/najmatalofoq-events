@@ -11,7 +11,7 @@ final class UserRegistered implements DomainEvent
 {
     public function __construct(
         public readonly UserId $userId,
-        public readonly string $email,
+        public readonly string $phone,
         public readonly DateTimeImmutable $occurredOn = new DateTimeImmutable,
     ) {}
 

@@ -9,10 +9,16 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->json('name');
+            $table->string('email')->unique()->nullable();
+            $table->string('phone')->unique();
             $table->string('password');
+            $table->string('avatar')->nullable();
+            $table->boolean('is_active')->default(false);
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

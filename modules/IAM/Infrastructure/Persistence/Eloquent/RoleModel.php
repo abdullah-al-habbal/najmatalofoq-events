@@ -18,6 +18,15 @@ final class RoleModel extends Model
 
     protected $fillable = [
         'id',
+        'slug',
         'name',
+        'is_global',
+        'level',
+    ];
+
+    protected $casts = [
+        'name' => 'array',
+        'is_global' => 'boolean',
+        'level' => 'integer',
     ];
 }

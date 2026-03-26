@@ -7,9 +7,13 @@ namespace Modules\IAM\Domain\Enum;
 
 enum RoleNameEnum: string
 {
-    case SUPERADMIN = 'superadmin';
-    case ADMIN = 'admin';
-    case MANAGER = 'manager';
-    case SUPERVISOR = 'supervisor';
-    case EMPLOYEE = 'employee';
+    case SYSTEM_CONTROLLER  = 'system_controller';
+    case GENERAL_MANAGER    = 'general_manager';
+    case OPERATIONS_MANAGER = 'operations_manager';
+    case PROJECT_MANAGER    = 'project_manager';
+    case AREA_MANAGER       = 'area_manager';
+    case SITE_MANAGER       = 'site_manager';
+    case SUPERVISOR         = 'supervisor';
+    case INDIVIDUAL         = 'individual';
+    case ADMISSIONS_ADMIN   = 'admissions_admin';
 }

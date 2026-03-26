@@ -17,8 +17,9 @@ final readonly class RegisterRequest
         return $this->validator->validate(
             (array) $request->getParsedBody(),
             [
-                'name'     => ['required', 'string', 'max:255'],
-                'email'    => ['required', 'email', 'max:255'],
+                'name'     => ['required', 'array'],
+                'email'    => ['nullable', 'email', 'max:255'],
+                'phone'    => ['required', 'string', 'max:20', 'unique:users,phone'],
                 'password' => ['required', 'string', 'min:8'],
             ]
         );

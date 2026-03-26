@@ -6,8 +6,9 @@ namespace Modules\IAM\Application\Command\RegisterUser;
 final readonly class RegisterUserCommand
 {
     public function __construct(
-        public string $name,
-        public string $email,
+        public array $name,
+        public ?string $email,
+        public string $phone,
         public string $password,
     ) {}
 }

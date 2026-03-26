@@ -17,13 +17,17 @@ final class UserReflector
         $user = $reflection->newInstanceWithoutConstructor();
 
         $properties = [
-            'uuid' => UserId::fromString($model->uuid),
+            'uuid' => UserId::fromString($model->id),
             'name' => $model->name,
             'email' => $model->email,
+            'phone' => $model->phone,
             'password' => new HashedPassword($model->password),
             'roleIds' => [], // will be set separately
+            'isActive' => $model->is_active,
             'createdAt' => $model->created_at->toDateTimeImmutable(),
             'updatedAt' => $model->updated_at?->toDateTimeImmutable(),
+            'phoneVerifiedAt' => $model->phone_verified_at?->toDateTimeImmutable(),
+            'deletedAt' => $model->deleted_at?->toDateTimeImmutable(),
         ];
 
         foreach ($properties as $field => $value) {
@@ -33,7 +37,7 @@ final class UserReflector
 
         $roleIds = [];
         foreach ($model->roles as $roleModel) {
-            $roleIds[] = RoleId::fromString($roleModel->uuid);
+            $roleIds[] = RoleId::fromString($roleModel->id);
         }
         $prop = $reflection->getProperty('roleIds');
         $prop->setValue($user, $roleIds);

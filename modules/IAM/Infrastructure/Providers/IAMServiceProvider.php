@@ -13,7 +13,7 @@ use Modules\IAM\Domain\Service\TokenManager;
 use Modules\IAM\Infrastructure\Persistence\Eloquent\EloquentUserRepository;
 use Modules\IAM\Infrastructure\Persistence\Eloquent\EloquentRoleRepository;
 use Modules\IAM\Infrastructure\Services\BcryptPasswordHasher;
-use Modules\IAM\Infrastructure\Services\SanctumTokenManager;
+use Modules\IAM\Infrastructure\Services\JwtTokenManager;
 
 final class IAMServiceProvider extends ServiceProvider
 {
@@ -21,7 +21,7 @@ final class IAMServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
         $this->app->bind(RoleRepository::class, EloquentRoleRepository::class);
-        $this->app->bind(TokenManager::class, SanctumTokenManager::class);
+        $this->app->bind(TokenManager::class, JwtTokenManager::class);
         $this->app->bind(PasswordHasher::class, BcryptPasswordHasher::class);
     }
 
@@ -29,8 +29,8 @@ final class IAMServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../Persistence/Migrations');
 
-        Route::prefix('api')
-            ->middleware('api')
+        Route::prefix('api/v1')
+            ->middleware(['api', 'auth:api'])
             ->group(__DIR__ . '/../Routes/api.php');
 
         Route::middleware('web')

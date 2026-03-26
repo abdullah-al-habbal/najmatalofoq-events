@@ -10,7 +10,7 @@ interface UserRepositoryInterface
 {
     public function nextIdentity(): UserId;
     public function save(User $user): void;
-    public function findByUuid(string $uuid): ?User;
     public function findByEmail(string $email): ?User;
+    public function findByPhone(string $phone): ?User;
     public function findById(UserId $id): ?User;
 }

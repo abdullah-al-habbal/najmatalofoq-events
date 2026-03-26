@@ -1,5 +1,5 @@
 <?php
-// Modules/Shared/Infrastructure/Services/DailyLogger.php
+// modules\Shared\Infrastructure\Services\Logger.php
 declare(strict_types=1);
 
 namespace Modules\Shared\Infrastructure\Services;

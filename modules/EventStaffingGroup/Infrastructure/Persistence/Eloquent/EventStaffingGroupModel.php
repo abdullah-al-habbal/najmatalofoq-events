@@ -4,60 +4,28 @@ declare(strict_types=1);
 
 namespace Modules\EventStaffingGroup\Infrastructure\Persistence\Eloquent;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 final class EventStaffingGroupModel extends Model
 {
-    use HasUuids, HasTranslations;
+    use HasUuids;
 
     protected $table = 'event_staffing_groups';
-
     protected $keyType = 'string';
-
     public $incrementing = false;
 
-    public array $translatable = ['name'];
-
     protected $fillable = [
+        'id',
         'event_id',
         'name',
+        'leader_id',
         'color',
-        'is_locked',
+        'is_active',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'name' => 'array',
-            'is_locked' => 'boolean',
-        ];
-    }
-
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(
-            \Modules\Event\Infrastructure\Persistence\Eloquent\EventModel::class,
-            'event_id',
-        );
-    }
-
-    public function participations(): HasMany
-    {
-        return $this->hasMany(
-            \Modules\EventParticipation\Infrastructure\Persistence\Eloquent\EventParticipationModel::class,
-            'group_id',
-        );
-    }
-
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(
-            \Modules\EventTask\Infrastructure\Persistence\Eloquent\EventTaskModel::class,
-            'group_id',
-        );
-    }
+    protected $casts = [
+        'name' => 'array',
+        'is_active' => 'boolean',
+    ];
 }

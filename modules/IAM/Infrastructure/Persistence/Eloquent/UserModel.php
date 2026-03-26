@@ -7,11 +7,22 @@ namespace Modules\IAM\Infrastructure\Persistence\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
 
-final class UserModel extends Model
+final class UserModel extends Model implements JWTSubject
 {
-    use HasApiTokens, HasUuids;
+    use HasUuids, Notifiable;
+
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 
     protected $table = 'users';
     protected $keyType = 'string';
@@ -21,16 +32,22 @@ final class UserModel extends Model
         'id',
         'name',
         'email',
+        'phone',
         'password',
-        'created_at',
-        'updated_at'
+        'avatar',
+        'is_active',
+        'phone_verified_at',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
+        'name' => 'array',
+        'is_active' => 'boolean',
+        'phone_verified_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function roles(): BelongsToMany

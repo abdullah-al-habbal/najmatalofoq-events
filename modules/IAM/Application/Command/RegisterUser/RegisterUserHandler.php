@@ -27,11 +27,11 @@ final readonly class RegisterUserHandler extends EventDispatchingHandler
 
     public function handle(RegisterUserCommand $command): UserId
     {
-        if ($this->repository->findByEmail($command->email)) {
-            throw UserAlreadyExistsException::withEmail($command->email);
+        if ($this->repository->findByPhone($command->phone)) {
+            throw UserAlreadyExistsException::withPhone($command->phone);
         }
 
-        $defaultRole = $this->roleRepository->findByName(RoleNameEnum::EMPLOYEE);
+        $defaultRole = $this->roleRepository->findByName(RoleNameEnum::INDIVIDUAL);
         if (!$defaultRole) {
             throw new \RuntimeException('Default role not found');
         }
@@ -41,6 +41,7 @@ final readonly class RegisterUserHandler extends EventDispatchingHandler
             uuid: $userId,
             name: $command->name,
             email: $command->email,
+            phone: $command->phone,
             password: $this->hasher->hash($command->password),
             roleIds: [$defaultRole->uuid],
             createdAt: new DateTimeImmutable,

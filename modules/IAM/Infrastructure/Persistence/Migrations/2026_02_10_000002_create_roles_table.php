@@ -9,7 +9,11 @@ return new class extends Migration {
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name')->unique();
+            $table->string('slug')->unique();              // e.g. 'general_manager'
+            $table->json('name');                          // {ar: "...", en: "..."}
+            $table->boolean('is_global')->default(false);
+            $table->tinyInteger('level')->unsigned();      // 0=System ... 7=Individual
+            $table->timestamps();
         });
     }
 
